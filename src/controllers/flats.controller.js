@@ -18,7 +18,7 @@ router.get("",async(req,res)=>{
     }
    
 })
-//Filter By resident-type
+//Filter By resident-type_
 router.get("/:Resident_Type",async(req,res)=>{
     try{
         const page = req.query.page || 1;
@@ -110,9 +110,9 @@ router.post("",async(req,res)=>{
 
 
 //Update
-router.put("/:id",async(req,res)=>{
+router.put("/:_id",async(req,res)=>{
     try{
-        const flat=await Resident.findByIdAndUpdate(req.params.id,req.body,{new:true}).lean().exec();
+        const flat=await Flats.findByIdAndUpdate(req.params._id,req.body,{new:true}).lean().exec();
         res.status(201).send(flat)
     }catch(err){
         res.status(500).send(err.message)

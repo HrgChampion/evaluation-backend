@@ -36,6 +36,35 @@ router.get("/:Resident_Type",async(req,res)=>{
     }
    
 })
+//Get each flat by id
+router.get("/flat/:_id" ,async(req,res)=>{
+    
+    try{
+        const flat=await Flats.findById(req.params._id).populate("Residents").lean().exec();
+        
+        res.status(200).send(flat)
+    }catch(err){
+        res.status(500).send(err.message)
+    }
+})
+router.get("/block/:Block",async(req,res)=>{
+    console.log(1)
+    try{
+        const page = req.query.page || 1;
+    const size = req.query.size || 3;
+        const flats=await Flats.find().populate("Residents").skip((page - 1) * size).limit(size).lean().exec();
+        const finalflats= flats.filter((flat)=>flat.Block==req.params.Block);
+        console.log(finalflats)
+        // const totalPages = Math.ceil(
+        //     (await Flats.find(finalflats).countDocuments()) / size
+        //   );
+        //   console.log({totalPages})
+        res.send(finalflats )
+    }catch(err){
+        res.status(500).send(err.message)
+    }
+   
+})
 //Sort By Ascending
 router.get("/sort/asc",async(req,res)=>{
     try{
@@ -78,15 +107,7 @@ router.post("",async(req,res)=>{
     }
 })
 
-//Get each flat by id
-router.get("/:id",async(req,res)=>{
-    try{
-        const flat=await Flats.findById(req.params.id).populate("Residents").lean().exec();
-        res.status(200).send(flat)
-    }catch(err){
-        res.status(500).send(err.message)
-    }
-})
+
 
 //Update
 router.put("/:id",async(req,res)=>{

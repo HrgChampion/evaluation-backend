@@ -1,6 +1,6 @@
 const mongoose =require("mongoose");
-
+require("dotenv").config();
 const connect=()=>{
-    mongoose.connect("mongodb+srv://himanshu:himanshu123@cluster0.ez7vk.mongodb.net/evaluationdb?retryWrites=true&w=majority");
+    mongoose.connect(`${process.env.MONGODB_URI}` );
 }
 module.exports = connect;
